@@ -1,21 +1,32 @@
 document.addEventListener('DOMContentLoaded', function() {
     const list = document.getElementById('list');
     const form = document.getElementById('form');
-
-    function fetchParties() { // pull parties from api
-        fetch('https://fsa-crud-2aa9294fe819.herokuapp.com/api/2410-FTB-ET-WEB-FT/events')
-        .then(response => response.json())
-        .then(parties => {
-            if (Array.isArray(parties)) {
-                renderParties(parties);
-            } else {
-                console.error('Fetched data is not an array:', parties);
-            }
-        })
-        .catch(error => console.error('Error fetching parties:', error));
+    let parties = []
+    async function fetchParties() { // pull parties from api
+        // fetch('https://fsa-crud-2aa9294fe819.herokuapp.com/api/2410-FTB-ET-WEB-FT/events')
+        // .then(response => response.json())
+        // .then(parties => {
+        //     if (Array.isArray(parties)) {
+        //         renderParties(parties);
+        //     } else {
+        //         console.error('Fetched data is not an array:', parties);
+        //     }
+        // })
+        // .catch(error => console.error('Error fetching parties:', error));
+        try {
+            const response = await fetch('https://fsa-crud-2aa9294fe819.herokuapp.com/api/2410-FTB-ET-WEB-FT/events')
+            const result = await response.json()
+            console.log(result.data)
+            parties = result.data
+            renderParties(parties);
+        } catch (error) {
+            console.log(error)
+        }
     }
+    
 
     function renderParties(parties) { // render parties
+        console.log(parties);
         list.innerHTML = '';
         parties.forEach((party, index) => {
             const partyElement = document.createElement('div');
